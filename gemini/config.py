@@ -1,6 +1,9 @@
 import google.generativeai as genai
+from dotenv import load_dotenv
+import os
 
-genai.configure(api_key="AIzaSyD_GhUCGINJ0XomvIsDgShl19VaczJyTqc")
+
+genai.configure(api_key=os.environ.get("GOOGLE_AI_KEY"))
 
 
 recipe_model = genai.GenerativeModel("gemini-1.5-flash",
