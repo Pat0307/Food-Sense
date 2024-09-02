@@ -1,0 +1,1 @@
+This is a webapp called FoodSense and I encourage people to use it as it is meant for all audiences. Food Sense is a webbapp that will find food for people and also give recipies accordingly to the users desires and restrictions as well.
