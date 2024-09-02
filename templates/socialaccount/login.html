@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load allauth %}
+{% block head_title %}
+   {% trans "Sign In" %}
+{% endblock head_title %}
+{% block body %}
+<div class="container mx-auto p-4">
+   <h1 class="text-4xl font-bold text-center mb-8 text-[#000022]">
+       {% blocktrans with provider.name as provider %}Sign In Via {{ provider }}{% endblocktrans %}
+   </h1>
+
+
+   <div class="bg-white rounded-lg shadow-md p-8 max-w-md mx-auto">
+       <p class="text-lg mb-4 text-gray-700 text-center">
+           {% blocktrans with provider.name as provider %}You are about to sign in using a third-party account from {{ provider }}.{% endblocktrans %}
+       </p>
+       {% element form method="post" no_visible_fields=True %}
+           {% slot actions %}
+               {% csrf_token %}
+               <div class="flex justify-center">
+                   <button type="submit" class="bg-[#e28413] hover:bg-[#bc7d30] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                       {% trans "Continue" %}
+                   </button>
+               </div>
+           {% endslot %}
+       {% endelement %}
+   </div>
+</div>
+{% endblock body %}
+
+

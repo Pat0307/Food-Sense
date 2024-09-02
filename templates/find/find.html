@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="container mx-auto px-4 py-8">
+   <div class="flex flex-col md:flex-row gap-8">
+       <div class="w-full md:w-1/2">
+           <h2 class="text-2xl font-bold mb-4 text-[#000022]">Nearby Restaurants:</h2>
+           <div class="bg-gray-100 rounded-lg p-4 shadow-md overflow-y-auto max-h-screen"> <ul class="list-none">
+                   {% for restaurant in places %}
+                       <div class="bg-white rounded-lg p-4 mb-4 shadow-md hover:shadow-lg hover:scale-105 hover:transition duration-300 ease-in-out">
+                           <h3 class="text-lg font-medium text-[#000022]">{{ restaurant.displayName }}</h3>
+                           <p class="text-gray-700">{{ restaurant.address }}</p>
+                           <ul class="text-gray-700 list-disc list-inside">
+                               {% for type in restaurant.types %}
+                                   <li>{{ type }}</li>
+                               {% endfor %}
+                           </ul>
+                       </div>
+                   {% endfor %}
+               </ul>
+           </div>
+       </div>
+       <div class="w-full md:w-1/2">
+           <h2 class="text-2xl font-bold mb-4 text-[#000022]">AI Recommendation:</h2>
+           <div id="aiResponse" class="border rounded-md p-4 bg-gray-100">
+               Loading AI response...
+           </div>
+       </div>
+   </div>
+</div>
+{% endblock body %}
+
+
+{% block script %}
+<script>
+async function getAIresponse(){
+   const endpointUrl = '/generate/';
+   const places = {{places|safe}}
+   console.log(places)
+
+   try {
+       const response = await fetch(endpointUrl, {
+           method: 'POST',
+           headers: {
+               "Content-Type": "application/json",
+               'X-CSRFToken': '{{ csrf_token }}',
+           },
+       });
+       if (response.ok) {
+           const data = await response.json();
+           document.getElementById("aiResponse").innerHTML = data.response
+       } else {
+           console.error("error");
+       }
+   } catch (error) {
+       console.error("Error occured");
+   }
+}
+window.onload = async() => {
+   console.log("hello")
+   {% comment %} document.getElementById('loading').style.display = 'block'; {% endcomment %}
+   await getAIresponse();
+}
+</script>
+{% endblock script %}
+
+
+
